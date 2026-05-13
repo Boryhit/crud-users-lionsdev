@@ -4,6 +4,7 @@ const contatos = require('./src/contatos');
 const adicionarContato  = require('./src/adicionarContato');
 const removerContato = require('./src/removerContato');
 const atualizarContato = require('./src/atualizarContato');
+const emailUsedByDifferentUser = require('./src/emailAlreadyInUse');
 
 function mainMenu() {
 
@@ -35,6 +36,11 @@ while (opcao !== 5) {
       const telefones = []
       const nome = prompt('Digite o nome do contato: '); 
       const email = prompt('Digite o email do contato: ');
+      if (emailUsedByDifferentUser(email, null)) {
+        console.log('O email já está em uso por outro contato.');
+        break;
+      }
+
       let telefone = prompt('Digite o telefone: ');
 
       while (telefone !== '') {
@@ -65,6 +71,11 @@ while (opcao !== 5) {
       } else {
         const novoNome = prompt('Novo nome: (deixe vazio para manter o nome atual) ') || undefined;
         const novoEmail = prompt('Novo email: (deixe vazio para manter o email atual) ') || undefined;
+
+        if (novoEmail && emailUsedByDifferentUser(novoEmail, id)) {
+          console.log('O email já está em uso por outro contato.');
+          continue;
+        }
 
         let novoTelefone = prompt('Digite o telefone: ');
 
